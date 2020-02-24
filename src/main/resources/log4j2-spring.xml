@@ -84,7 +84,7 @@
 
         </logger>
 
-
+<!--        加载日志appender-->
         <root level="info">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFileDebug"/>
