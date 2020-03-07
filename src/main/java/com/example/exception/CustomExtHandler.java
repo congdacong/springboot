@@ -1,5 +1,8 @@
 package com.example.exception;
 
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 /**
- * 丛广博
+ * congguangbo
  */
 @RestControllerAdvice
 public class CustomExtHandler {
@@ -19,7 +22,6 @@ public class CustomExtHandler {
      */
     @ExceptionHandler(value= Exception.class)
     Response handleException(Exception e){
-//        return Response.error(new CustomerException (CustomerExcepitonType.UNKNOWN_ERROR,e.getMessage()));
         return Response.error(e);
     }
 
@@ -30,11 +32,15 @@ public class CustomExtHandler {
      */
     @ExceptionHandler(value = CustomerException.class)
     Response girlHandle(CustomerException ge) {
-//        if(ge.getCode() == CustomerExcepitonType.USER_INSTER_ERROR.getCode()){
-//            return Response.error(new CustomerException (CustomerExcepitonType.USER_INSTER_ERROR,ge.getMessage()));
-//        }else{
-//            return Response.error(new CustomerException (CustomerExcepitonType.SYSTEM_ERROR,ge.getMessage()));
-//        }
+        return Response.error(ge);
+    }
+    /**
+     * shiro 异常
+     * @param ge
+     * @return
+     */
+    @ExceptionHandler(value = AuthenticationException.class)
+    Response unknownAccount(AuthenticationException ge) {
         return Response.error(ge);
     }
 }

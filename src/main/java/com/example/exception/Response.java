@@ -1,6 +1,10 @@
 package com.example.exception;
 
 
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+
 import java.util.HashMap;
 
 /**
@@ -62,18 +66,30 @@ public class Response {
         }
         return response;
     }
+
+    /**
+     * 系统异常
+     * @param e
+     * @return
+     */
     public static Response error(Exception e){
         Response response = new Response();
         response.setIsok(false);
+        response.setMessage(CustomerExcepitonType.UNKNOWN_ERROR.getDescription());
+        response.setCode(CustomerExcepitonType.UNKNOWN_ERROR.getCode());
+        return response;
+    }
+
+    /**
+     * shiro 异常
+     * @param e
+     * @return
+     */
+    public static Response error(AuthenticationException e){
+        Response response = new Response();
+        response.setIsok(false);
         response.setMessage(e.getMessage());
-        response.setCode(111);
-//        if(e.getCode() == CustomerExcepitonType.SYSTEM_ERROR.getCode()){
-//            response.setMessage(e.getMessage()+"系统错误，请联系管理员！");
-//        }else if(e.getCode() == CustomerExcepitonType.USER_INSTER_ERROR.getCode()){
-//            response.setMessage(e.getMessage()+"用户输入错误，请重新输入");
-//        }else{
-//            response.setMessage(e.getMessage()+"未知错误！");
-//        }
+        response.setCode(CustomerExcepitonType.UserNotExist.getCode());
         return response;
     }
     public Response success(){

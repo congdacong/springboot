@@ -3,7 +3,8 @@ package com.example.exception;
 public enum CustomerExcepitonType {
     USER_INSTER_ERROR("用户输入错误",400),
     SYSTEM_ERROR("系统错误",500),
-    UNKNOWN_ERROR("未知错误",111);
+    UNKNOWN_ERROR("未知错误",111),
+    UserNotExist("认证异常",222);
     private String description;
     private int code;
 
