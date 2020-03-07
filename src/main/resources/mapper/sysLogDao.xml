@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 映射 接口 IBookDao -->
+<mapper namespace="com.example.dao.SysLogDao">
+
+    <insert id="save" parameterType="com.example.entity.SysLog">
+      INSERT INTO `sys_log`(`title`,`method`,`request_method`,`business_type`,`status`,`operation_url`,`json_result`,`error_messge`) VALUES
+      (#{title},#{method},#{requestMethod},#{businessType},#{status},#{operationUrl},#{jsonResult},#{errorMessge});
+   </insert>
+
+</mapper>

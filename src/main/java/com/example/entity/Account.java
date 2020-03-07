@@ -39,4 +39,14 @@ public class Account implements Serializable {
     public void setSex(String sex) {
         this.sex = sex;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", age='" + age + '\'' +
+                ", sex='" + sex + '\'' +
+                '}';
+    }
 }
