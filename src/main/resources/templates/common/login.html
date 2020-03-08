@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="form">
+    <input id="userName" name="userName" type="text">
+    <input id="password" name="password" type="password">
+    <button type="button" onclick="login()">确定</button>
+</form>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+
+<script type="text/javascript">
+    function login() {
+
+        $.ajax({
+            type: "POST",//规定传输方式
+            url: "/boo/login",//提交URL
+            data: {'username': $('#userName').val(), 'password': $('#password').val()},
+            success: function (data) {
+                if(data.message=="success"){
+                    location.href = "/boo/success";
+                }else{
+                    alert(data.message);
+                }
+            }
+        });
+    }
+</script>
+</html>

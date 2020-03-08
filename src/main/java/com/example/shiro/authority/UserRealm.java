@@ -1,5 +1,7 @@
 package com.example.shiro.authority;
 
+import com.example.entity.SysUser;
+import com.example.service.SysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -7,6 +9,8 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +21,8 @@ import java.util.Set;
  * 自定义Realm，处理用户登录权限
  */
 public class UserRealm extends AuthorizingRealm {
+    @Autowired
+    SysUserService sysUserService;
     /**
      * 授权
      */
@@ -31,21 +37,21 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        String userName = "admin";
-        String password = "123456";
-        UsernamePasswordToken userToken = (UsernamePasswordToken) token;
-        if(!userName.equals(userToken.getUsername())){
-            return null;
-        }
-        userToken.getUsername();
-        userToken.getPassword();
-        System.out.println("登录认证");
-        /**
-         *  1. principal：获取当前用户的认证
-         *  2. password：密码
-         *  3. realmName：认证名
-         */
-        return new SimpleAuthenticationInfo("",password,"");
+            UsernamePasswordToken userToken = (UsernamePasswordToken) token;
+            SysUser sysUser = sysUserService.queryUserByName(userToken.getUsername());
+            if(sysUser==null){
+                return null;
+            }
+            //自定义盐值
+            ByteSource salt = ByteSource.Util.bytes(sysUser.getUserName());
+
+            /**
+             *  1. principal：获取当前用户的认证
+             *  2. password：密码
+             *  3. realmName：认证名
+             */
+            SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(sysUser, sysUser.getPassword(), salt, getName());
+            return info;
     }
 
     /**

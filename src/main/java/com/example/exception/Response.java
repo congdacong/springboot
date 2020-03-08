@@ -2,8 +2,6 @@ package com.example.exception;
 
 
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
 
 import java.util.HashMap;
 
@@ -82,24 +80,24 @@ public class Response {
 
     /**
      * shiro 异常
-     * @param e
+     * @param
      * @return
      */
-    public static Response error(AuthenticationException e){
+    public static Response error(String msg){
         Response response = new Response();
         response.setIsok(false);
-        response.setMessage(e.getMessage());
+        response.setMessage(msg);
         response.setCode(CustomerExcepitonType.UserNotExist.getCode());
         return response;
     }
-    public Response success(){
+    public static Response success(){
         Response response = new Response();
         response.setIsok(true);
         response.setCode(200);
         response.setMessage("success");
         return response;
     }
-    public Response success(Object data){
+    public static Response success(Object data){
         Response response = new Response();
         response.setIsok(true);
         response.setCode(200);
