@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="ehcache" updateCheck="false">
+    <!--    updateCheck：boolean类型，是否检查更新，默认为true。当设置为true时
+            CacheManager会定期的从网上去检查当前的Ehcache是否是最新的版本，如果不是，则会将比当前版本新的版本列出来。-->
+    <!-- 磁盘缓存位置
+    这个是磁盘存储路径,当内存缓存满了的时候,就会往这里面放,java.io.tmdir是操作系统缓存的临时目录,不同操作系统缓存目录不一样.
+    -->
+    <diskStore path="java.io.tmpdir"/>
+
+    <!-- maxElementsInMemory:缓存最大数.最多可以缓存1000个element对象,当超过1000个时,不输出到磁盘中.
+         eternal:缓存是否过期,true为不过期.
+         timeToIdleSeconds:失效前的空闲秒数,当eternal为false时，这个属性才有效.
+         timeToLiveSeconds:失效前的存活秒数,创建时间到失效时间的间隔为存活时间,当eternal为false时,这个属性才有效.
+         maxElementsOnDisk:磁盘缓存的大小.
+         diskExpiryThreadIntervalSeconds:ehcache内部有一个低等级的进程,它会判断元素的是否过期,diskExpiryThreadIntervalSeconds属性可以设置该线程执行的间隔时间(默认是120秒，不能太小，以免影响效率).
+         memoryStoreEvictionPolicy:当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存.默认策略是LRU（最近最少使用）
+         overflowToDisk:设定当内存缓存溢出的时候是否将过期的element缓存到磁盘上.
+         diskPersistent:设定在虚拟机重启时是否进行磁盘存储，默认为false.
+    -->
+    <!-- 默认的缓存配置 -->
+    <defaultCache
+            maxElementsInMemory="1000"
+            eternal="false"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="3600"
+            maxElementsOnDisk="100000"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU">
+    </defaultCache>
+
+    <cache
+            name="loginCache"
+            maxElementsInMemory="1000"
+            eternal="false"
+            timeToIdleSeconds="1200"
+            timeToLiveSeconds="600"
+            maxElementsOnDisk="100000"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU">
+    </cache>
+
+    <cache
+            name="sessionCache"
+            maxElementsInMemory="1000"
+            eternal="true"
+            maxElementsOnDisk="100000"
+            diskExpiryThreadIntervalSeconds="1200"
+            overflowToDisk = "true">
+    </cache>
+
+</ehcache>

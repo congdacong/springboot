@@ -73,8 +73,8 @@ public class Response {
     public static Response error(Exception e){
         Response response = new Response();
         response.setIsok(false);
-        response.setMessage(CustomerExcepitonType.UNKNOWN_ERROR.getDescription());
-        response.setCode(CustomerExcepitonType.UNKNOWN_ERROR.getCode());
+        response.setMessage(CustomerExcepitonType.SYSTEM_ERROR.getDescription());
+        response.setCode(CustomerExcepitonType.SYSTEM_ERROR.getCode());
         return response;
     }
 

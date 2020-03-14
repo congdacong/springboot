@@ -2,6 +2,7 @@ package com.example.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @Author:congguangbo
@@ -17,5 +18,11 @@ public class CommonController {
     @RequestMapping("/logout")
     public String logout(){
         return "common/logout";
+    }
+
+    @RequestMapping("/unauth")
+    @ResponseBody
+    public String unauth(){
+        return "没有权限";
     }
 }
