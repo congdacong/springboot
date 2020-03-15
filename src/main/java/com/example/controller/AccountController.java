@@ -23,7 +23,7 @@ public class AccountController {
      */
     @RequestMapping("/select")
     @RequiresPermissions("system:account:select")
-    @Log(describe = "用户管理", businessType = EnumsConnection.BusinessType.State.SELECT)
+    @Log(describe = "用户查询", businessType = EnumsConnection.BusinessType.State.SELECT)
     public List<Account> index() {
         return accountService.findAll();
     }
@@ -33,7 +33,7 @@ public class AccountController {
      */
     @RequestMapping("/select1")
     @RequiresPermissions("system:account:select1")
-    @Log(describe = "用户管理", businessType = EnumsConnection.BusinessType.State.SELECT)
+    @Log(describe = "用户查询", businessType = EnumsConnection.BusinessType.State.SELECT)
     public List<Account> index1() {
         return accountService.findAll();
     }
