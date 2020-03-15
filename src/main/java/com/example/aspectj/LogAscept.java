@@ -5,7 +5,6 @@ import com.example.entity.SysLog;
 import com.example.enums.EnumsConnection;
 import com.example.service.SysLogService;
 import com.example.util.ServletUtil;
-import com.example.util.StringUtils;
 import com.google.gson.Gson;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
@@ -73,7 +72,7 @@ public class LogAscept {
             sysLog.setJsonResult(new Gson().toJson(jsonResult));
             if (e != null) {
                 sysLog.setStatus(EnumsConnection.BusinessStatus.State.FAIL.ordinal());
-                sysLog.setErrorMessge(StringUtils.substring(e.getMessage(), 0, 2000));
+                sysLog.setErrorMessge(e.getMessage().substring( 0, 2000));
             }
             // 设置方法名称
             String className = joinPoint.getTarget().getClass().getName();

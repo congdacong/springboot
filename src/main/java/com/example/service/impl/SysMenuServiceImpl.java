@@ -4,9 +4,9 @@ import com.example.dao.SysMenuDao;
 import com.example.entity.SysMenu;
 import com.example.entity.SysUser;
 import com.example.service.SysMenuService;
-import com.example.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -24,7 +24,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         Set<String> permsSet = new HashSet<>();
         for (String perm : perms)
         {
-            if (StringUtils.isNotEmpty(perm))
+            if (!StringUtils.isEmpty(perm))
             {
                 permsSet.addAll(Arrays.asList(perm.trim().split(",")));
             }

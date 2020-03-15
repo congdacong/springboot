@@ -2,6 +2,7 @@ package com.example.exception;
 
 
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.AuthorizationException;
 
 import java.util.HashMap;
 
@@ -79,7 +80,7 @@ public class Response {
     }
 
     /**
-     * shiro 异常
+     * shiro 认证异常
      * @param
      * @return
      */
@@ -87,9 +88,22 @@ public class Response {
         Response response = new Response();
         response.setIsok(false);
         response.setMessage(msg);
-        response.setCode(CustomerExcepitonType.UserNotExist.getCode());
+        response.setCode(CustomerExcepitonType.Login_Exist.getCode());
         return response;
     }
+    /**
+     * shiro 权限异常
+     * @param
+     * @return
+     */
+    public static Response error(AuthorizationException ae){
+        Response response = new Response();
+        response.setIsok(false);
+        response.setMessage("权限异常");
+        response.setCode(CustomerExcepitonType.Approve_Exist.getCode());
+        return response;
+    }
+
     public static Response success(){
         Response response = new Response();
         response.setIsok(true);

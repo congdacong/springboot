@@ -56,23 +56,26 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-//        shiroFilterFactoryBean.setLoginUrl("/common/login");
-//        shiroFilterFactoryBean.setUnauthorizedUrl("/common/unauth");
+        shiroFilterFactoryBean.setLoginUrl("/boo/index");
+        /**
+         * 没有权限返回的url
+         */
+        shiroFilterFactoryBean.setUnauthorizedUrl("/boo/unauth");
         /**
          * 1. anon：不需要认证的资源
-         * 2. authc： 需要认证的资源
+         * 2. authc： 需要认证的资源,所有资源都登陆.
          * 3. user： 拥有的记住我的资源
-         * 4. perms： 拥有对某个资源的权限
+         * 4. perms： 拥有对某个资源的权限,所有资源都要认证.
          * 5. roles：拥有某个角色
          */
         //定义过滤链集合
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("common/logout", "logout");
         filterChainDefinitionMap.put("/boo/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/image/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/lib/**", "anon");
+        filterChainDefinitionMap.put("/boo/logout", "logout");
         filterChainDefinitionMap.put("/**/**", "authc");
 
         // 所有请求需要认证

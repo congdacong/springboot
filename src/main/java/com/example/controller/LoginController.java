@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import com.example.annotation.Log;
+import com.example.enums.EnumsConnection;
 import com.example.exception.Response;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -24,6 +26,7 @@ public class LoginController {
     }
     @RequestMapping("/login")
     @ResponseBody
+    @Log(describe = "用户登录", businessType = EnumsConnection.BusinessType.State.LOGON)
     public Response login(String username, String password, ModelMap modelMap) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
@@ -41,5 +44,14 @@ public class LoginController {
             return Response.error("unexpected condition?  error?");
         }
     }
+        @RequestMapping("/logout")
+        public String logout(){
+            return "common/logout";
+    }
 
+        @RequestMapping("/unauth")
+        @ResponseBody
+        public String unauth(){
+            return "没有权限";
+    }
 }

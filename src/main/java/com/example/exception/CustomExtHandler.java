@@ -1,6 +1,7 @@
 package com.example.exception;
 
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,7 +34,7 @@ public class CustomExtHandler {
         return Response.error(ge);
     }
     /**
-     * shiro 异常
+     * shiro 登录异常
      * @param ge
      * @return
      */
@@ -41,4 +42,14 @@ public class CustomExtHandler {
     Response unknownAccount(AuthenticationException ge) {
         return Response.error(ge);
     }
+    /**
+     * shiro 认证异常
+     * @param ge
+     * @return
+     */
+    @ExceptionHandler(value = AuthorizationException.class)
+    Response unknownAccount(AuthorizationException ge) {
+        return Response.error(ge);
+    }
+
 }

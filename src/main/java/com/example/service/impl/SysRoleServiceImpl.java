@@ -3,9 +3,9 @@ package com.example.service.impl;
 import com.example.dao.SysRoleDao;
 import com.example.entity.SysRole;
 import com.example.service.SysRoleService;
-import com.example.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -27,7 +27,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         Set<String> permsSet = new HashSet<>();
         for (SysRole perm : perms)
         {
-            if (StringUtils.isNotNull(perm))
+            if (!StringUtils.isEmpty(perm))
             {
                 permsSet.addAll(Arrays.asList(perm.getRoleKey().trim().split(",")));
             }
