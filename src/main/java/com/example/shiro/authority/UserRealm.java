@@ -2,6 +2,7 @@ package com.example.shiro.authority;
 
 import com.example.entity.SysRole;
 import com.example.entity.SysUser;
+import com.example.service.SysMenuService;
 import com.example.service.SysRoleService;
 import com.example.service.SysUserService;
 import org.apache.shiro.SecurityUtils;
@@ -27,6 +28,8 @@ public class UserRealm extends AuthorizingRealm {
     SysUserService sysUserService;
     @Autowired
     private SysRoleService sysRoleService;
+    @Autowired
+    private SysMenuService sysMenuService;
     /**
      * 授权
      */
@@ -43,7 +46,7 @@ public class UserRealm extends AuthorizingRealm {
             /**
              * 所有资源都可以访问
              */
-//            info.addRole("admin");
+            info.addRole("admin");
             info.addStringPermission("*:*:*");
         }else{
             /**
@@ -51,9 +54,8 @@ public class UserRealm extends AuthorizingRealm {
              */
             roles = sysRoleService.selectRoleKeys(sysUser.getUserId());
             // 角色加入AuthorizationInfo认证对象
-//            info.setRoles(roles);
-            menus.add("system:account:select");
-//            menus.add("system:account:select1");
+            info.setRoles(roles);
+            menus = sysMenuService.selectPermsByUserId(sysUser.getUserId());
             info.setStringPermissions(menus);
         }
         System.out.println("授权");
