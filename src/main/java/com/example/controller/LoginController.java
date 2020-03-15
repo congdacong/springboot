@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class LoginController {
     @RequestMapping("/index")
     public String index() {
-        return "common/login";
+        return "login";
 
     }
     @RequestMapping("/success")
     public String success() {
-        return "common/index";
+        return "index";
 
     }
     @RequestMapping("/login")
