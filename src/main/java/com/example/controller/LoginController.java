@@ -27,9 +27,9 @@ public class LoginController {
     @RequestMapping("/login")
     @ResponseBody
     @Log(describe = "用户登录", businessType = EnumsConnection.BusinessType.State.LOGON)
-    public Response login(String username, String password, ModelMap modelMap) {
+    public Response login(String username, String password, ModelMap modelMap,Boolean rememberMe) {
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password,true);
         try {
             subject.login(token);
             return Response.success();

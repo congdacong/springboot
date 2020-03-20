@@ -4,10 +4,15 @@ import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.example.shiro.authority.UserRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -31,17 +36,19 @@ public class ShiroConfig {
         userRealm.setCredentialsMatcher(hashedCredentialsMatcher);
         return userRealm;
     }
+
     /**
      * 安全管理器
      */
     @Bean
-    public DefaultWebSecurityManager securityManager(UserRealm userRealm)
-    {
+    public DefaultWebSecurityManager securityManager(UserRealm userRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 设置realm.
         securityManager.setRealm(userRealm);
         // 设置缓存
         securityManager.setCacheManager(getEhCacheManager());
+        // 设置记住我
+        securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
     }
 
@@ -76,19 +83,21 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/lib/**", "anon");
         filterChainDefinitionMap.put("/boo/logout", "logout");
-        filterChainDefinitionMap.put("/**/**", "authc");
+        filterChainDefinitionMap.put("/**/**", "user");
 
         // 所有请求需要认证
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
 
     }
+
     /**
      * 加密方式
+     *
      * @return
      */
     @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
         //指定加密方式
         credentialsMatcher.setHashAlgorithmName("MD5");
@@ -98,21 +107,21 @@ public class ShiroConfig {
         credentialsMatcher.setStoredCredentialsHexEncoded(true);
         return credentialsMatcher;
     }
+
     /**
      * thymeleaf模板引擎和shiro框架的整合
      */
     @Bean
-    public ShiroDialect shiroDialect()
-    {
+    public ShiroDialect shiroDialect() {
         return new ShiroDialect();
     }
+
     /**
      * 开启Shiro注解通知器
      */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(
-            @Qualifier("securityManager") SecurityManager securityManager)
-    {
+            @Qualifier("securityManager") SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
@@ -127,5 +136,39 @@ public class ShiroConfig {
         EhCacheManager cacheManager = new EhCacheManager();
         return cacheManager;
     }
+    //会话管理器
+//    @Bean
+//    public SessionManager sessionManager() {
+//        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+//        sessionManager.setSessionIdUrlRewritingEnabled(false);
+//        sessionManager.setGlobalSessionTimeout(1 * 60 * 60 * 1000);//session过期时间
+//        sessionManager.setDeleteInvalidSessions(true);//是否删除过期session
+//        sessionManager.setSessionIdCookie(rememberMeCookie());
+//        return sessionManager;
+//    }
+    /**
+     * 设置cooke记住我
+     */
+    public CookieRememberMeManager rememberMeManager() {
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        cookieRememberMeManager.setCookie(rememberMeCookie());
+        cookieRememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));
+        return cookieRememberMeManager;
+    }
 
+    /**
+     * cookie 属性设置
+     */
+    public SimpleCookie rememberMeCookie() {
+        SimpleCookie cookie = new SimpleCookie("rememberMe");
+        cookie.setHttpOnly(true);
+        cookie.setDomain("");
+        /**
+         * 多条cookie.setPath
+         * 最后一条为准
+         */
+        cookie.setPath("/");
+        cookie.setMaxAge(30 * 24 * 60 * 60);
+        return cookie;
+    }
 }
