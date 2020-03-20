@@ -134,18 +134,11 @@ public class ShiroConfig {
     @Bean
     public EhCacheManager getEhCacheManager() {
         EhCacheManager cacheManager = new EhCacheManager();
+        cacheManager.setCacheManagerConfigFile("classpath:ehcache.xml");
         return cacheManager;
     }
-    //会话管理器
-//    @Bean
-//    public SessionManager sessionManager() {
-//        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-//        sessionManager.setSessionIdUrlRewritingEnabled(false);
-//        sessionManager.setGlobalSessionTimeout(1 * 60 * 60 * 1000);//session过期时间
-//        sessionManager.setDeleteInvalidSessions(true);//是否删除过期session
-//        sessionManager.setSessionIdCookie(rememberMeCookie());
-//        return sessionManager;
-//    }
+
+
     /**
      * 设置cooke记住我
      */
