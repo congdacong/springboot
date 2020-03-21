@@ -43,7 +43,28 @@ public class SysLog implements Serializable {
     /**
      * IP地址
      */
-    private String ip;
+    private String operationIp;
+    /**
+     * 操作账号
+     */
+    private String operationName;
+
+    public String getOperationIp() {
+        return operationIp;
+    }
+
+    public void setOperationIp(String operationIp) {
+        this.operationIp = operationIp;
+    }
+
+    public String getOperationName() {
+        return operationName;
+    }
+
+    public void setOperationName(String operationName) {
+        this.operationName = operationName;
+    }
+
     /**
      * 错误信息
      */
@@ -95,14 +116,6 @@ public class SysLog implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
     }
 
     public Date getOperationTime() {

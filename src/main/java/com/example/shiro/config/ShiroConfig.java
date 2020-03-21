@@ -6,7 +6,13 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.SessionListener;
+import org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler;
+import org.apache.shiro.session.mgt.SessionFactory;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.SessionValidationScheduler;
+import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -19,11 +25,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * @Author:congguangbo
  * @Date:2020/3/7 21:00
  * Shiro 核心配置类
+ */
+
+/**
+ * 2020-03-21
+ * 1.EhCacheManager:缓存的运用还需完善。
+ * 2.filter:logout 登出应该添加filter。
+ * 3.session: 会话的管理还需完善。
  */
 @Configuration
 public class ShiroConfig {
@@ -49,6 +63,7 @@ public class ShiroConfig {
         securityManager.setCacheManager(getEhCacheManager());
         // 设置记住我
         securityManager.setRememberMeManager(rememberMeManager());
+        securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
 
@@ -83,7 +98,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/lib/**", "anon");
         filterChainDefinitionMap.put("/boo/logout", "logout");
-        filterChainDefinitionMap.put("/**/**", "user");
+//        filterChainDefinitionMap.put("/**/**", "user");
+        filterChainDefinitionMap.put("/**/**", "authc");
 
         // 所有请求需要认证
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -105,6 +121,7 @@ public class ShiroConfig {
         credentialsMatcher.setHashIterations(1024);
         //此处的设置，true加密用的hex编码，false用的base64编码
         credentialsMatcher.setStoredCredentialsHexEncoded(true);
+
         return credentialsMatcher;
     }
 
@@ -138,7 +155,36 @@ public class ShiroConfig {
         return cacheManager;
     }
 
+    /**
+     * 会话管理器
+     */
+    @Bean
+    public DefaultWebSessionManager sessionManager()
+    {
+        DefaultWebSessionManager manager = new DefaultWebSessionManager();
+        //自定义的SessionCookie
+        manager.setSessionIdCookie(simpleCookie());
+       //设置全局session超时时间
+        manager.setGlobalSessionTimeout(30 * 60 * 1000); //毫秒
+        manager.setSessionIdUrlRewritingEnabled(true);
+        // 删除过期的session
+        manager.setDeleteInvalidSessions(true);
+        // 取消url 后面的 JSESSIONID
+        manager.setSessionIdUrlRewritingEnabled(false);
+        // 定义要使用的无效的Session定时调度器
+        manager.setSessionValidationScheduler(mySessionScheduler());
+        // 是否定时检查session
+        manager.setSessionValidationSchedulerEnabled(true);
+        return manager;
+    }
 
+
+    @Bean
+    public SessionValidationScheduler mySessionScheduler() {
+        ExecutorServiceSessionValidationScheduler executorServiceSessionValidationScheduler = new ExecutorServiceSessionValidationScheduler();
+        executorServiceSessionValidationScheduler.setInterval(100000); //毫秒
+        return executorServiceSessionValidationScheduler;
+    }
     /**
      * 设置cooke记住我
      */
@@ -148,7 +194,16 @@ public class ShiroConfig {
         cookieRememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));
         return cookieRememberMeManager;
     }
-
+    /**
+     * 设置session的Cookie
+     */
+    public SimpleCookie simpleCookie() {
+        SimpleCookie simpleCookie = new SimpleCookie();
+        simpleCookie.setName("JSESSIONIDZ");
+        simpleCookie.setHttpOnly(true);
+        simpleCookie.setMaxAge(-1);
+        return simpleCookie;
+    }
     /**
      * cookie 属性设置
      */
@@ -161,7 +216,7 @@ public class ShiroConfig {
          * 最后一条为准
          */
         cookie.setPath("/");
-        cookie.setMaxAge(30 * 24 * 60 * 60);
+        cookie.setMaxAge(30 * 24 * 60 * 60); //秒
         return cookie;
     }
 }

@@ -2,10 +2,12 @@ package com.example.aspectj;
 
 import com.example.annotation.Log;
 import com.example.entity.SysLog;
+import com.example.entity.SysUser;
 import com.example.enums.EnumsConnection;
 import com.example.service.SysLogService;
 import com.example.util.ServletUtil;
 import com.google.gson.Gson;
+import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -80,6 +82,13 @@ public class LogAscept {
             sysLog.setMethod(className + "." + methodName + "()");
             // 处理设置注解上的参数
             getControllerMethodDescription(controllerLog, sysLog);
+            //获取IP
+            SysUser sysUser  = (SysUser)SecurityUtils.getSubject().getPrincipal();
+            if (sysUser!=null){
+                sysLog.setOperationName(sysUser.getUserName());
+                sysLog.setOperationIp(SecurityUtils.getSubject().getSession().getHost());
+            }
+
             sysLogService.save(sysLog);
 
         } catch (Exception exp) {

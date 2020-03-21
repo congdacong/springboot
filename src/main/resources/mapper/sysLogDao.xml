@@ -6,8 +6,8 @@
 <mapper namespace="com.example.dao.SysLogDao">
 
     <insert id="save" parameterType="com.example.entity.SysLog">
-      INSERT INTO `sys_log`(`title`,`method`,`request_method`,`business_type`,`status`,`operation_url`,`json_result`,`error_messge`) VALUES
-      (#{title},#{method},#{requestMethod},#{businessType},#{status},#{operationUrl},#{jsonResult},#{errorMessge});
+      INSERT INTO `sys_log`(`title`,`method`,`request_method`,`business_type`,`status`,`operation_url`,`json_result`,`error_messge`,`operation_ip`,`operation_name`) VALUES
+      (#{title},#{method},#{requestMethod},#{businessType},#{status},#{operationUrl},#{jsonResult},#{errorMessge},#{operationIp},#{operationName});
    </insert>
 
 </mapper>
