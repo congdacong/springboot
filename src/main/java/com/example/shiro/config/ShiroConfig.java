@@ -24,8 +24,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:congguangbo
@@ -91,6 +93,7 @@ public class ShiroConfig {
          * 5. roles：拥有某个角色
          */
         //定义过滤链集合
+//        Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/boo/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
@@ -100,9 +103,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/boo/logout", "logout");
 //        filterChainDefinitionMap.put("/**/**", "user");
         filterChainDefinitionMap.put("/**/**", "authc");
-
         // 所有请求需要认证
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+//        shiroFilterFactoryBean.setFilters(filters);
         return shiroFilterFactoryBean;
 
     }
@@ -175,6 +178,10 @@ public class ShiroConfig {
         manager.setSessionValidationScheduler(mySessionScheduler());
         // 是否定时检查session
         manager.setSessionValidationSchedulerEnabled(true);
+        // 自定义SessionDao
+//        manager.setSessionDAO(sessionDAO());
+        // 自定义sessionFactory
+//        manager.setSessionFactory(sessionFactory());
         return manager;
     }
 
