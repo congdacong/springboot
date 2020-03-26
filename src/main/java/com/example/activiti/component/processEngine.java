@@ -14,8 +14,9 @@ public class processEngine {
         @Autowired
         RepositoryService repositoryService;
         @Test
-        /**
-         * 部署流程（非启动！）
+        /**流程定义：bpmn文件
+         * 部署流程（非启动！）：部署信息表：ACT_RE_DEPLOYMENT  流程定义数据表：ACT_RE_PROCDEF 资源文件表：ACT_GE_BYTEARRAY
+         * 流程实例:启动一个流程实例
          */
         public void deploymentProcess(){
                 Deployment deployment = repositoryService.createDeployment()
