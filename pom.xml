@@ -116,43 +116,21 @@
             <artifactId>swagger-bootstrap-ui</artifactId>
             <version>1.8.7</version>
         </dependency>
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.activiti/activiti-engine-->
-<!--             工作流数据库表的SQL语句和自动初始化数据库-->
-<!--        &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.activiti</groupId>-->
-<!--            <artifactId>activiti-engine</artifactId>-->
-<!--            <version>7.0.0.Beta1</version>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.activiti/activiti-spring &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.activiti</groupId>-->
-<!--            <artifactId>activiti-spring</artifactId>-->
-<!--            <version>7.0.0.Beta1</version>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.activiti/activiti-bpmn-model &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.activiti</groupId>-->
-<!--            <artifactId>activiti-bpmn-model</artifactId>-->
-<!--            <version>7.0.0.Beta1</version>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.activiti/activiti-bpmn-converter &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.activiti</groupId>-->
-<!--            <artifactId>activiti-bpmn-converter</artifactId>-->
-<!--            <version>7.0.0.Beta1</version>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.activiti/activiti-json-converter &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.activiti</groupId>-->
-<!--            <artifactId>activiti-json-converter</artifactId>-->
-<!--            <version>7.0.0.Beta1</version>-->
-<!--        </dependency>-->
-        <!-- https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter -->
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-spring-boot-starter</artifactId>
-            <version>7.0.0.Beta1</version>
+            <artifactId>activiti-spring-boot-starter-basic</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-json-converter</artifactId>
+            <version>6.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.activiti</groupId>
+                    <artifactId>activiti-bpmn-model</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
